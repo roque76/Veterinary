@@ -1,0 +1,47 @@
+package com.pets.veterinaryprog2.service;
+
+import com.pets.veterinaryprog2.exceptions.VeterinaryException;
+import com.pets.veterinaryprog2.model.*;
+import lombok.Data;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+@Data
+public class VeterinaryService {
+    private List<Vet> vets;
+    private List<City> cities;
+    private List<Vaccine> vaccines;
+
+    public VeterinaryService(){
+        //Simulation of db startup
+        cities= new ArrayList<>(); // Initialize list
+        //Add cities to the list
+        cities.add(new City("16917001","manizales"));
+        cities.add(new City("16917063","pereira"));
+    }
+    public City findCItyById(String id) throws VeterinaryException {
+        for(City cityFound: this.getCities()){
+            if(cityFound.getCode().equals(id)){
+                return cityFound;
+            }
+        }
+        throw new VeterinaryException("La ciudad con"+id+"no existe");
+    }
+    public City findCityByName(String name) throws VeterinaryException{
+        for(City cityFound: this.getCities()) {
+            if (cityFound.getDescription().equalsIgnoreCase(name)) {
+                return cityFound;
+            }
+        }
+        throw new VeterinaryException("La ciudad con" +name+ "no existe");
+    }
+    public City findCitiesByLetter(char letter) throws VeterinaryException{
+        for(City cityFound : this.getCities()){
+            char firstLetter = cityFound.getDescription().charAt(0);
+            if(firstLetter)
+        }
+    }
+}
