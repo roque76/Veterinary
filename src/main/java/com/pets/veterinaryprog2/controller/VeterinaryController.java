@@ -54,4 +54,18 @@ public class VeterinaryController {
                     null,errors),HttpStatus.OK);
         }
     }
+    @GetMapping(path="/cities/{letter}")
+    public ResponseEntity<ResponseDTO> getCitiesByLetter(@PathVariable String letter){
+        try{
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
+                    veterinaryService.findCitiesByLetter(letter),null),HttpStatus.OK);
+        }
+        catch (VeterinaryException e){
+            List<String> errors = new ArrayList<>();
+            errors.add(e.getMessage());
+
+            return  new ResponseEntity<>(new ResponseDTO(HttpStatus.NOT_FOUND.value(),
+                    null,errors),HttpStatus.OK);
+        }
+    }
 }

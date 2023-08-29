@@ -38,10 +38,18 @@ public class VeterinaryService {
         }
         throw new VeterinaryException("La ciudad con" +name+ "no existe");
     }
-    public City findCitiesByLetter(char letter) throws VeterinaryException{
+    public List<String> findCitiesByLetter(String letter) throws VeterinaryException{
+        List<String> cities = new ArrayList<>();
         for(City cityFound : this.getCities()){
-            char firstLetter = cityFound.getDescription().charAt(0);
-            if(firstLetter)
+            if(cityFound.getDescription().toLowerCase().startsWith(letter.toLowerCase())){
+                cities.add(cityFound.getDescription());
+            }
+        }
+        if(cities.isEmpty()){
+            throw new VeterinaryException("No hay ciudades que empiezen por "+letter);
+        }
+        else{
+            return cities;
         }
     }
 }
