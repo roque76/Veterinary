@@ -21,6 +21,10 @@ public class VeterinaryService {
         //Add cities to the list
         cities.add(new City("16917001","manizales"));
         cities.add(new City("16917063","pereira"));
+        cities.add(new City("123","Pasto"));
+        cities.add(new City("123","Patos"));
+        cities.add(new City("123","Pasta"));
+        cities.add(new City("123","Percebes"));
     }
     public City findCItyById(String id) throws VeterinaryException {
         for(City cityFound: this.getCities()){
@@ -38,11 +42,11 @@ public class VeterinaryService {
         }
         throw new VeterinaryException("La ciudad con" +name+ "no existe");
     }
-    public List<String> findCitiesByLetter(String letter) throws VeterinaryException{
-        List<String> cities = new ArrayList<>();
+    public List<City> findCitiesByLetter(String letter) throws VeterinaryException{
+        List<City> cities = new ArrayList<>();
         for(City cityFound : this.getCities()){
             if(cityFound.getDescription().toLowerCase().startsWith(letter.toLowerCase())){
-                cities.add(cityFound.getDescription());
+                cities.add(cityFound);
             }
         }
         if(cities.isEmpty()){

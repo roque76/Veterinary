@@ -26,7 +26,7 @@ public class VeterinaryController {
                 veterinaryService.getCities(), null),HttpStatus.OK);
 
     }
-    @GetMapping(path="/cities/{id}")
+    @GetMapping(path="/cities/id/{id}")
     public ResponseEntity<ResponseDTO> getCityById(@PathVariable String id){
         try {
             return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
@@ -40,7 +40,7 @@ public class VeterinaryController {
                     null, errors), HttpStatus.OK);
         }
     }
-    @GetMapping(path="/cities/{name}")
+    @GetMapping(path="/cities/name/{name}")
     public ResponseEntity<ResponseDTO> getCityByName(@PathVariable String name){
         try{
             return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
@@ -54,7 +54,7 @@ public class VeterinaryController {
                     null,errors),HttpStatus.OK);
         }
     }
-    @GetMapping(path="/cities/{letter}")
+    @GetMapping(path="/cities/letter/{letter}")
     public ResponseEntity<ResponseDTO> getCitiesByLetter(@PathVariable String letter){
         try{
             return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
