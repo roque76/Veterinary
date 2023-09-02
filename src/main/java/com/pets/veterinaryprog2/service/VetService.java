@@ -13,12 +13,14 @@ import java.util.List;
 public class VetService {
     private List<Vet> vets;
 
-    public VetService(List<Vet> vets) {
+    public VetService() {
+        vets = new ArrayList<>();
         vets.add(new Vet("123","Santiago",(byte)22));
         vets.add(new Vet("345","Mariano",(byte)23));
         vets.add(new Vet("567","Valeria",(byte)22));
         vets.add(new Vet("789","Martina", (byte) 18));
         vets.add(new Vet("101","Martin",(byte)21));
+        vets.add(new Vet("123","Valeria",(byte)3));
     }
 
     public Vet findVetByCode(String code) throws VeterinaryException{
@@ -40,11 +42,35 @@ public class VetService {
     }
     public List<Vet> findVetsByFirstLetter(char letter){
         List<Vet> foundVets = new ArrayList<>();
+        String letterString = String.valueOf(letter);
         for(Vet vets:this.getVets()){
-            if(vets.getName().toUpperCase().charAt(0)==letter){
+            if(vets.getName().startsWith(letterString.toUpperCase())){
                 foundVets.add(vets);
             }
         }
         return foundVets;
     }
+
+    public Vet getYoungerVet(){
+        Vet youngerVet = null;
+        byte savedAge = Byte.MAX_VALUE;
+        for(Vet vets:this.getVets()){
+            if(vets.getAge()<savedAge){
+                youngerVet = vets;
+                savedAge = vets.getAge();
+            }
+        }
+        return youngerVet;
+    }
+    public List<Vet> getVetsInRange(byte lowerValue, byte upperValue){
+        List<Vet> foundVets = new ArrayList<>();
+
+        for(Vet vets:this.getVets()){
+            if(vets.getAge()<=upperValue && vets.getAge()>=lowerValue){
+                foundVets.add(vets);
+            }
+        }
+        return foundVets;
+    }
+
 }

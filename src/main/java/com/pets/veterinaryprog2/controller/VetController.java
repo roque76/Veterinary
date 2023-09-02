@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.service.annotation.GetExchange;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class VetController {
     @Autowired
     private VetService veterinaryService;
 
-    @GetMapping (path="/by_code/{code}")
+    @GetMapping (path="/byCode/{code}")
     public ResponseEntity<ResponseDTO> getVetById(@PathVariable String code){
         if(code != null && !code.isEmpty()) {
             try {
@@ -39,7 +40,7 @@ public class VetController {
                     null,error),HttpStatus.OK);
         }
     }
-    @GetMapping(path="/by_name/{name}")
+    @GetMapping(path="/byName/{name}")
     public ResponseEntity<ResponseDTO> getVetByName(@PathVariable String name){
         if(name != null && !name.isEmpty()){
             try {
@@ -62,12 +63,45 @@ public class VetController {
         }
     }
 
-    @GetMapping(path="/by_firstletter/{letter}")
+    @GetMapping(path="/byLetter/{letter}")
     public ResponseEntity<ResponseDTO> getVetsByFirstLetter(@PathVariable char letter){
-        return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
-                veterinaryService.findVetsByFirstLetter(letter),null),HttpStatus.OK);
+        if(Character.isLetter(letter)) {
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
+                    veterinaryService.findVetsByFirstLetter(letter), null), HttpStatus.OK);
+        }
+        else{
+            List<String> error = new ArrayList<>();
+            error.add("El caracter proveido debe ser una letra");
+
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.BAD_REQUEST.value(),
+                    null,error),HttpStatus.OK);
+        }
     }
 
+    @GetMapping(path="/Vets")
+    public ResponseEntity<ResponseDTO> getVets(){
+        return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
+                veterinaryService.getVets(),null),HttpStatus.OK);
+    }
 
+    @GetMapping(path="/youngerVet")
+    public ResponseEntity<ResponseDTO> getYoungerVet(){
+        return  new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
+                 veterinaryService.getYoungerVet(),null),HttpStatus.OK);
+    }
 
+    @GetMapping(path="/getVetsInRange/{lowerValue}/{upperValue}")
+    public ResponseEntity<ResponseDTO> getVetsInRange(@PathVariable byte lowerValue, @PathVariable byte upperValue){
+        if(upperValue<=lowerValue){
+            List<String> error = new ArrayList<>();
+            error.add("El valor de la edad inferior no debe superar o ser igual al superior.");
+
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.BAD_REQUEST.value(),
+                    null,error),HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
+                    veterinaryService.getVetsInRange(lowerValue,upperValue),null),HttpStatus.OK);
+        }
+    }
 }

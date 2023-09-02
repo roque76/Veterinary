@@ -19,13 +19,13 @@ public class CityController {
     @Autowired
     private CityService veterinaryService;
 
-    @GetMapping(path="/get_cities")
+    @GetMapping(path="/getCities")
     public ResponseEntity<ResponseDTO> getAllCities(){
         return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
                 veterinaryService.getCities(), null),HttpStatus.OK);
 
     }
-    @GetMapping(path="/by_id/{id}")
+    @GetMapping(path="/byId/{id}")
     public ResponseEntity<ResponseDTO> getCityById(@PathVariable String id){
         try {
             return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
@@ -39,7 +39,7 @@ public class CityController {
                     null, errors), HttpStatus.OK);
         }
     }
-    @GetMapping(path="by_name/{name}")
+    @GetMapping(path="byName/{name}")
     public ResponseEntity<ResponseDTO> getCityByName(@PathVariable String name){
         if(name != null && !name.isEmpty()){
             try{
@@ -61,10 +61,19 @@ public class CityController {
                     null,error),HttpStatus.OK);
         }
     }
-    @GetMapping(path="by_letter/{letter}")
+    @GetMapping(path="byLetter/{letter}")
     public ResponseEntity<ResponseDTO> getCitiesByFirstLetter(@PathVariable char letter){
-        return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
-                    veterinaryService.findCitiesByFirstLetter(letter),null),HttpStatus.OK);
+        if(Character.isLetter(letter)) {
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
+                    veterinaryService.findCitiesByFirstLetter(letter), null), HttpStatus.OK);
+        }
+        else{
+            List<String> error = new ArrayList<>();
+            error.add("El caracter proveido tiene que ser una letra");
+
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.BAD_REQUEST.value(),
+                    null,error),HttpStatus.OK);
+        }
 
     }
 }

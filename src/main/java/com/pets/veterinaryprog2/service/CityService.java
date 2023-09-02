@@ -45,9 +45,10 @@ public class CityService {
     public List<City> findCitiesByFirstLetter(char letter) {
         //Create an empty list to store the city objects that matches
         List<City> citiesFound = new ArrayList<>();
+        String letterString = String.valueOf(letter);
         //Iterate over the saved cities
         for(City cities : this.getCities()) {//save the first char of the description and compare it
-            if (cities.getDescription().charAt(0)==letter) {
+            if (cities.getDescription().startsWith(letterString.toLowerCase())) {
                 citiesFound.add(cities);
             }
         }//Return cities
