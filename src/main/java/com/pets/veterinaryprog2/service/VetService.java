@@ -20,7 +20,7 @@ public class VetService {
         vets.add(new Vet("567","Valeria",(byte)22));
         vets.add(new Vet("789","Martina", (byte) 18));
         vets.add(new Vet("101","Martin",(byte)21));
-        vets.add(new Vet("123","Valeria",(byte)3));
+        vets.add(new Vet("123","Valeria",(byte)10));
     }
 
     public Vet findVetByCode(String code) throws VeterinaryException{
@@ -32,13 +32,19 @@ public class VetService {
         throw new VeterinaryException("El veterinario con el codigo"+code+"no existe");
     }
 
-    public Vet findVetByName(String name) throws VeterinaryException{
+    public List<Vet> findVetsByName(String name) throws VeterinaryException{
+        List<Vet> matchedVets = new ArrayList<>();
         for(Vet vets: this.getVets()){
             if(vets.getName().equalsIgnoreCase(name)){
-                return vets;
+                matchedVets.add(vets);
             }
         }
-        throw new VeterinaryException("No exise un veterinario de nombre: "+name);
+        if(matchedVets.isEmpty()){
+            throw new VeterinaryException("No existen veterinarios de nombre: "+name);
+        }
+        else{
+            return matchedVets;
+        }
     }
     public List<Vet> findVetsByFirstLetter(char letter){
         List<Vet> foundVets = new ArrayList<>();

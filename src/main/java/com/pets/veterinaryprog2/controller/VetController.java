@@ -41,11 +41,11 @@ public class VetController {
         }
     }
     @GetMapping(path="/byName/{name}")
-    public ResponseEntity<ResponseDTO> getVetByName(@PathVariable String name){
+    public ResponseEntity<ResponseDTO> getVetsByName(@PathVariable String name){
         if(name != null && !name.isEmpty()){
             try {
                 return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
-                        veterinaryService.findVetByName(name), null), HttpStatus.OK);
+                        veterinaryService.findVetsByName(name), null), HttpStatus.OK);
             } catch (VeterinaryException e) {
                 List<String> error = new ArrayList<>();
                 error.add(e.getMessage());
