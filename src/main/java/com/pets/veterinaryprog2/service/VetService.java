@@ -1,5 +1,6 @@
 package com.pets.veterinaryprog2.service;
 
+import com.pets.veterinaryprog2.controller.dto.RangeDataStructureDTO;
 import com.pets.veterinaryprog2.exceptions.VeterinaryException;
 import com.pets.veterinaryprog2.model.Vet;
 import lombok.Data;
@@ -99,6 +100,34 @@ public class VetService {
         }
         throw new VeterinaryException("El codigo ingresado no existe");
     }
+
+    public List<RangeDataStructureDTO> getVetsInDefaultRange(){
+        byte totalFirstRange = 0;
+        byte totalSecondRange = 0;
+        byte totalThirdRange= 0;
+        byte totalFourthRange= 0;
+
+        for(Vet vets:this.getVets()){
+            if(vets.getAge()<=10 && vets.getAge()>=1){
+                totalFirstRange ++;
+            } else if (vets.getAge()>=11 && vets.getAge()<=20) {
+                totalSecondRange ++;
+            } else if (vets.getAge()>=21 && vets.getAge()<=30) {
+                totalThirdRange ++;
+            } else if (vets.getAge()>=31) {
+                totalFourthRange ++;
+            }
+        }
+        List<RangeDataStructureDTO> rangeList = new ArrayList<>();
+
+        rangeList.add(new RangeDataStructureDTO("Range: 1-10",totalFirstRange));
+        rangeList.add(new RangeDataStructureDTO("Range: 11-20",totalSecondRange));
+        rangeList.add(new RangeDataStructureDTO("Range: 21-30",totalThirdRange));
+        rangeList.add(new RangeDataStructureDTO("Range: 31-Infinite",totalFourthRange));
+
+        return rangeList;
+    }
+
     private boolean verifyVetExist(Vet vet)
 {
         for(Vet vets:this.getVets()){

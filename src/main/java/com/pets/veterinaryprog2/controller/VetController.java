@@ -111,6 +111,12 @@ public class VetController {
         }
     }
 
+    @GetMapping(path="/byDefinedRange")
+    public ResponseEntity<ResponseDTO> getVetsInDefinedRange(){
+        return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
+                veterinaryService.getVetsInDefaultRange(),null),HttpStatus.OK);
+    }
+
     @PostMapping(path="/createVet")
     public ResponseEntity<ResponseDTO> createVet(@Valid @RequestBody Vet vet){
         try {
