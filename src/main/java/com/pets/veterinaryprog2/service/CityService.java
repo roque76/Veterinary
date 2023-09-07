@@ -54,4 +54,32 @@ public class CityService {
         }//Return cities
         return citiesFound;
     }
+    public String createCity(City newCity) throws VeterinaryException{
+        if(this.verifyCityExist(newCity)){
+            throw new VeterinaryException("El codigo ingresado ya existe: ");
+        }
+        else {
+            this.cities.add(newCity);
+            return "Ciudad agregada correctamente";
+        }
+    }
+
+    public String updateCity(String code, City updCity)throws VeterinaryException{
+        for(City cities:this.getCities()){
+            if(cities.getCode().equals(code)){
+                cities.setDescription(updCity.getDescription());
+                return "Datos actualizados con exito";
+            }
+        }
+        throw new VeterinaryException("El codigo ingresado no existe");
+    }
+    private boolean verifyCityExist(City city)
+    {
+        for(City cities:this.getCities()){
+            if(city.getCode().equals(cities.getCode())){
+                return true;
+            }
+        }
+        return false;
+    }
 }

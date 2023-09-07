@@ -2,15 +2,21 @@ package com.pets.veterinaryprog2.controller;
 
 import com.pets.veterinaryprog2.controller.dto.ResponseDTO;
 import com.pets.veterinaryprog2.exceptions.VeterinaryException;
+import com.pets.veterinaryprog2.model.Vet;
 import com.pets.veterinaryprog2.service.VetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 
+import jakarta.validation.Valid;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @RestController
 @RequestMapping(path="/vets")
@@ -104,4 +110,42 @@ public class VetController {
                     veterinaryService.getVetsInRange(lowerValue,upperValue),null),HttpStatus.OK);
         }
     }
+
+    @PostMapping(path="/createVet")
+    public ResponseEntity<ResponseDTO> createVet(@Valid @RequestBody Vet vet){
+        try {
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
+                    veterinaryService.createVet(vet),null),HttpStatus.OK);
+        }
+        catch (VeterinaryException e) {
+            List<String> errors = new ArrayList<>();
+            errors.add(e.getMessage());
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.CONFLICT.value(),
+                    null,errors),HttpStatus.OK);
+        }
+    }
+
+    @PutMapping(path="updateVetById/{id}")
+    public ResponseEntity<ResponseDTO> updateVet(@PathVariable String id,@Valid @RequestBody Vet vet){
+        try {
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
+                    veterinaryService.updateVet(id,vet),null),HttpStatus.OK);
+        } catch (VeterinaryException e) {
+            List<String> errors = new ArrayList<>();
+            errors.add(e.getMessage());
+
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.NOT_FOUND.value(),
+                    null,errors),HttpStatus.OK);
+        }
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ResponseDTO> handleValidation(MethodArgumentNotValidException exception){
+        List<String> errors = exception.getBindingResult().getFieldErrors().stream()
+                .map(FieldError::getDefaultMessage).toList();
+
+        return new ResponseEntity<>(new ResponseDTO(HttpStatus.BAD_REQUEST.value(),
+                null,errors),HttpStatus.OK);
+    }
+
 }

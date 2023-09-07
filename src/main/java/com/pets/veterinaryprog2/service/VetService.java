@@ -79,4 +79,34 @@ public class VetService {
         return foundVets;
     }
 
+    public String createVet(Vet vet) throws VeterinaryException{
+        if(this.verifyVetExist(vet)){
+            throw new VeterinaryException("El codigo ingresado ya existe: ");
+        }
+        else {
+            this.vets.add(vet);
+            return "Veterinario agregado correctamente";
+        }
+    }
+
+    public String updateVet(String code, Vet updVet)throws VeterinaryException{
+        for(Vet vets:this.getVets()){
+            if(vets.getCode().equals(code)){
+                vets.setAge(updVet.getAge());
+                vets.setName(updVet.getName());
+                return "Datos actualizados con exito";
+            }
+        }
+        throw new VeterinaryException("El codigo ingresado no existe");
+    }
+    private boolean verifyVetExist(Vet vet)
+{
+        for(Vet vets:this.getVets()){
+            if(vet.getCode().equals(vets.getCode())){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
