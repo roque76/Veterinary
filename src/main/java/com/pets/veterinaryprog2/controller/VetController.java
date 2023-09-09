@@ -117,6 +117,21 @@ public class VetController {
                 veterinaryService.getVetsInDefaultRange(),null),HttpStatus.OK);
     }
 
+    @GetMapping(path="/getIntercalatedVets/{message}")
+    public ResponseEntity<ResponseDTO> getIntercalatedVets(@PathVariable String message){
+        if(!message.equalsIgnoreCase("pair") && !message.equalsIgnoreCase("impair")){
+            List<String> errors = new ArrayList<>();
+            errors.add("Se debe especificar el inicio como par o impar");
+
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.BAD_REQUEST.value(),
+                    null,errors),HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
+                    veterinaryService.getIntercalatedVetPair(message),null),HttpStatus.OK);
+        }
+    }
+
     @PostMapping(path="/createVet")
     public ResponseEntity<ResponseDTO> createVet(@Valid @RequestBody Vet vet){
         try {

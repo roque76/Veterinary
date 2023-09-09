@@ -128,6 +128,46 @@ public class VetService {
         return rangeList;
     }
 
+    public List<Vet> getIntercalatedVetPair(String message){
+        List<Vet> pairVets = new ArrayList<>();
+        List<Vet> impairVets = new ArrayList<>();
+        List<Vet> finalVets = new ArrayList<>();
+
+        for(Vet vets:this.getVets()){
+            if(vets.getAge()%2==0){
+                pairVets.add(vets);
+            }
+            else{
+                impairVets.add(vets);
+            }
+        }
+
+        while(!pairVets.isEmpty()|| !impairVets.isEmpty()){
+            if("pair".equalsIgnoreCase(message)){
+                if(!pairVets.isEmpty()){
+                    finalVets.add(pairVets.get(0));
+                    pairVets.remove(0);
+                }
+                if (!impairVets.isEmpty()) {
+                    finalVets.add(impairVets.get(0));
+                    impairVets.remove(0);
+                }
+            }
+            if("impair".equalsIgnoreCase(message)){
+                if(!impairVets.isEmpty()){
+                    finalVets.add(impairVets.get(0));
+                    impairVets.remove(0);
+                }
+                if(!pairVets.isEmpty()){
+                    finalVets.add(pairVets.get(0));
+                    pairVets.remove(0);
+                }
+            }
+        }
+
+        return finalVets;
+    }
+
     private boolean verifyVetExist(Vet vet)
 {
         for(Vet vets:this.getVets()){
