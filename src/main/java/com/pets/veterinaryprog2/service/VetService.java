@@ -128,7 +128,7 @@ public class VetService {
         return rangeList;
     }
 
-    public List<Vet> getIntercalatedVetPair(String message){
+    public List<Vet> getIntercalatedVets(String message){
         List<Vet> pairVets = new ArrayList<>();
         List<Vet> impairVets = new ArrayList<>();
         List<Vet> finalVets = new ArrayList<>();
