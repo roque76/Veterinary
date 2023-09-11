@@ -128,7 +128,7 @@ public class VetController {
         }
         else{
             return new ResponseEntity<>(new ResponseDTO(HttpStatus.OK.value(),
-                    veterinaryService.getIntercalatedVetPair(message),null),HttpStatus.OK);
+                    veterinaryService.getIntercalatedVets(message),null),HttpStatus.OK);
         }
     }
 
